@@ -13,6 +13,16 @@ nav {
 	color: white;
 	text-shadow: none;
 }
+.navbar-default .navbar-brand {
+	padding-top: 8px;
+}
+
+.navbar-default .navbar-brand div {
+	font-size: 10px;
+	position: relative;
+	top: -4px;
+	opacity: 0.7;
+}
 
 .navbar-default .navbar-nav>li>a:hover,
 .navbar-default .navbar-nav>li>a:active,
@@ -176,8 +186,16 @@ footer {
 }
 
 .loan-features {
-	padding: 10px 0 0 0;
+	border-top: 1px solid #444;
+
+	margin-top: 14px;
+	padding: 14px 0 0 0;
 	font-size: 11px;
+
+	color: #999;
+}
+.loan-features span:hover {
+	color: white;
 }
 
 .loan-features > div:first-child {
@@ -185,6 +203,8 @@ footer {
 	cursor: pointer;
 
 	opacity: 0.8;
+
+	padding-bottom: 4px;
 }
 
 
