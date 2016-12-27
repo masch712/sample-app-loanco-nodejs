@@ -20,33 +20,33 @@ router.post('/loan/personal', function(req, res, next) {
 
 	var body = req.body;
 
-    // create an envelope that will store the document(s), field(s), and recipient(s)
-    var envDef = new docusign.EnvelopeDefinition();
-    envDef.setEmailSubject('Personal Loan Application');
-    envDef.setEmailBlurb('Please sign the Loan application to start the application process.');
+	// create an envelope that will store the document(s), field(s), and recipient(s)
+	var envDef = new docusign.EnvelopeDefinition();
+	envDef.setEmailSubject('Personal Loan Application');
+	envDef.setEmailBlurb('Please sign the Loan application to start the application process.');
 
-    // add a document to the envelope
-    var doc = new docusign.Document();
+	// add a document to the envelope
+	var doc = new docusign.Document();
 	var file1Base64 = app.helpers.getLocalDocument('pdfs/LoanPersonal.docx');
-    // var base64Doc = new Buffer(file1Base64).toString('base64');
-    doc.setDocumentBase64(file1Base64);
-    doc.setName('Document'); // can be different from actual file name
-    doc.setFileExtension('docx');
-    doc.setDocumentId('1'); // hardcode so we can easily refer to this document later
+	// var base64Doc = new Buffer(file1Base64).toString('base64');
+	doc.setDocumentBase64(file1Base64);
+	doc.setName('Document'); // can be different from actual file name
+	doc.setFileExtension('docx');
+	doc.setDocumentId('1'); // hardcode so we can easily refer to this document later
 
-    var docs = [];
-    docs.push(doc);
-    envDef.setDocuments(docs);
+	var docs = [];
+	docs.push(doc);
+	envDef.setDocuments(docs);
 
 
-    // Recipient
-    var signer = new docusign.Signer();
-    signer.setEmail(body.inputEmail);
-    signer.setName(body.inputFirstName + ' ' + body.inputLastName);
-    signer.setRecipientId('1');
-    if(body.inputSigningLocation == 'embedded'){
-    	signer.setClientUserId('1001');
-    }
+	// Recipient
+	var signer = new docusign.Signer();
+	signer.setEmail(body.inputEmail);
+	signer.setName(body.inputFirstName + ' ' + body.inputLastName);
+	signer.setRecipientId('1');
+	if(body.inputSigningLocation == 'embedded'){
+		signer.setClientUserId('1001');
+	}
 	if(body.inputAuthentication == 'phone'){
 		app.helpers.addPhoneAuthToRecipient(signer, body.inputPhone);
 	}
@@ -55,21 +55,21 @@ router.post('/loan/personal', function(req, res, next) {
 	}
 
 
-    // Tabs
+	// Tabs
 
-    // can have multiple tabs, so need to add to envelope as a single element list
-    var tabList = {
-    	text: [],
-    	email: [],
-    	fullName: [],
-    	signHere: [],
-    	initialHere: [],
-    	dateSigned: [],
-    	formula: [],
-    	number: []
-    }
+	// can have multiple tabs, so need to add to envelope as a single element list
+	var tabList = {
+		text: [],
+		email: [],
+		fullName: [],
+		signHere: [],
+		initialHere: [],
+		dateSigned: [],
+		formula: [],
+		number: []
+	}
 
-    // Note: using anchorStrings (in tabs below) makes documentId and pageNumber irrelevant (they affect all documents and pages)
+	// Note: using anchorStrings (in tabs below) makes documentId and pageNumber irrelevant (they affect all documents and pages)
 
 	// FullName
 	tabList.fullName.push(app.helpers.makeTab('FullName', {
@@ -185,39 +185,39 @@ router.post('/loan/personal', function(req, res, next) {
 	}));
 
 
-    var tabs = new docusign.Tabs();
-    tabs.setTextTabs(tabList.text);
-    tabs.setNumberTabs(tabList.number);
-    tabs.setFormulaTabs(tabList.formula);
-    tabs.setEmailTabs(tabList.email);
-    tabs.setFullNameTabs(tabList.fullName);
-    tabs.setSignHereTabs(tabList.signHere);
-    tabs.setInitialHereTabs(tabList.initialHere);
-    tabs.setDateSignedTabs(tabList.dateSigned);
+	var tabs = new docusign.Tabs();
+	tabs.setTextTabs(tabList.text);
+	tabs.setNumberTabs(tabList.number);
+	tabs.setFormulaTabs(tabList.formula);
+	tabs.setEmailTabs(tabList.email);
+	tabs.setFullNameTabs(tabList.fullName);
+	tabs.setSignHereTabs(tabList.signHere);
+	tabs.setInitialHereTabs(tabList.initialHere);
+	tabs.setDateSignedTabs(tabList.dateSigned);
 
-    signer.setTabs(tabs);
+	signer.setTabs(tabs);
 
-    // add recipients (in this case a single signer) to the envelope
-    envDef.setRecipients(new docusign.Recipients());
-    envDef.getRecipients().setSigners([]);
-    envDef.getRecipients().getSigners().push(signer);
+	// add recipients (in this case a single signer) to the envelope
+	envDef.setRecipients(new docusign.Recipients());
+	envDef.getRecipients().setSigners([]);
+	envDef.getRecipients().getSigners().push(signer);
 
-    // send the envelope by setting |status| to "sent". To save as a draft set to "created"
-    // - note that the envelope will only be 'sent' when it reaches the DocuSign server with the 'sent' status (not in the following call)
-    envDef.setStatus('sent');
+	// send the envelope by setting |status| to "sent". To save as a draft set to "created"
+	// - note that the envelope will only be 'sent' when it reaches the DocuSign server with the 'sent' status (not in the following call)
+	envDef.setStatus('sent');
 
-    // instantiate a new EnvelopesApi object
-    var envelopesApi = new docusign.EnvelopesApi();
+	// instantiate a new EnvelopesApi object
+	var envelopesApi = new docusign.EnvelopesApi();
 
-   	app.helpers.removeEmptyAndNulls(envDef);
+	app.helpers.removeEmptyAndNulls(envDef);
 
-    // call the createEnvelope() API
-    envelopesApi.createEnvelope(app.config.auth.AccountId, envDef, null, function (error, envelopeSummary, response) {
+	// call the createEnvelope() API
+	envelopesApi.createEnvelope(app.config.auth.AccountId, envDef, null, function (error, envelopeSummary, response) {
 		if (error) {
 			console.error('Error: ' + response);
 			console.error(envelopeSummary);
-	        res.send('Error creating envelope, please try again');
-	        return;
+			res.send('Error creating envelope, please try again');
+			return;
 		}
 
 		// Create and save envelope locally (temporary)
@@ -227,7 +227,7 @@ router.post('/loan/personal', function(req, res, next) {
 			if(body.inputSigningLocation == 'embedded'){
 				app.helpers.getRecipientUrl(envelopeSummary.envelopeId, signer, function(err, data){
 					if(err){
-			        	res.send('Error with getRecipientUrl, please try again');
+						res.send('Error with getRecipientUrl, please try again');
 						return console.error(err);
 					}
 
@@ -243,7 +243,7 @@ router.post('/loan/personal', function(req, res, next) {
 			}
 		});
 
-    });
+	});
 });
 
 module.exports = router;

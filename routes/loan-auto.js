@@ -31,9 +31,9 @@ router.post('/loan/auto', function(req, res, next) {
 	tRoleApplicant.setRoleName('applicant');
 	tRoleApplicant.setName(body.inputFirstName + ' ' + body.inputLastName);
 	tRoleApplicant.setEmail(body.inputEmail);
-    if(body.inputSigningLocation == 'embedded'){
-    	tRoleApplicant.setClientUserId('1001');
-    }
+	if(body.inputSigningLocation == 'embedded'){
+		tRoleApplicant.setClientUserId('1001');
+	}
 	if(body.inputAccessCode && body.inputAccessCode.length){
 		tRoleApplicant.setAccessCode(body.inputAccessCode);
 	}
@@ -61,9 +61,9 @@ router.post('/loan/auto', function(req, res, next) {
 
 	// Set default Tab values in template
 	var tabs = new docusign.TemplateTabs();
-    tabs.setTextTabs(tabList.text);
-    tabs.setNumberTabs(tabList.number);
-    tRoleApplicant.setTabs(tabs);
+	tabs.setTextTabs(tabList.text);
+	tabs.setNumberTabs(tabList.number);
+	tRoleApplicant.setTabs(tabs);
 
 
 	var tRoleCosigner = new docusign.TemplateRole();
@@ -71,9 +71,9 @@ router.post('/loan/auto', function(req, res, next) {
 		tRoleCosigner.setRoleName('cosigner');
 		tRoleCosigner.setName(body.inputCosignerFirstName + ' ' + body.inputCosignerLastName);
 		tRoleCosigner.setEmail(body.inputCosignerEmail);
-	    if(body.inputSigningLocationCosigner == 'embedded'){
-	    	tRoleCosigner.setClientUserId('2002');
-	    }
+		if(body.inputSigningLocationCosigner == 'embedded'){
+			tRoleCosigner.setClientUserId('2002');
+		}
 		if(body.inputAccessCodeCosigner && body.inputAccessCodeCosigner.length){
 			tRoleCosigner.setAccessCode(body.inputAccessCodeCosigner);
 		}
@@ -91,8 +91,8 @@ router.post('/loan/auto', function(req, res, next) {
 
 		// Set default Tab values in template
 		var tabsCosigner = new docusign.TemplateTabs();
-	    tabsCosigner.setTextTabs(tabListCosigner.text);
-	    tRoleCosigner.setTabs(tabsCosigner);
+		tabsCosigner.setTextTabs(tabListCosigner.text);
+		tRoleCosigner.setTabs(tabsCosigner);
 
 	}
 
@@ -122,22 +122,22 @@ router.post('/loan/auto', function(req, res, next) {
 	app.helpers.removeEmptyAndNulls(envDef);
 
 	
-   	// // pretty printing (no base64 bytes) 
-   	// var mockEnv = JSON.parse(JSON.stringify(envDef));
-   	// mockEnv.documents = _.map(mockEnv.documents,function(doc){
-   	// 	if(doc.documentBase64){
-   	// 		doc.documentBase64 = '<bytes here>';
-   	// 	}
-   	// 	return doc;
-   	// });
-   	// console.log(JSON.stringify(mockEnv,null,2));
+	// // pretty printing (no base64 bytes) 
+	// var mockEnv = JSON.parse(JSON.stringify(envDef));
+	// mockEnv.documents = _.map(mockEnv.documents,function(doc){
+	// 	if(doc.documentBase64){
+	// 		doc.documentBase64 = '<bytes here>';
+	// 	}
+	// 	return doc;
+	// });
+	// console.log(JSON.stringify(mockEnv,null,2));
 
 	// call the createEnvelope() API
 	envelopesApi.createEnvelope(app.config.auth.AccountId, envDef, null, function (error, envelopeSummary, response) {
 		if (error) {
 			console.error('Error: ' + response);
 			console.error(envelopeSummary);
-	        res.send('Error creating envelope, please try again');
+			res.send('Error creating envelope, please try again');
 			return;
 		}
 
@@ -174,7 +174,7 @@ router.post('/loan/auto', function(req, res, next) {
 			if(body.inputSigningLocation == 'embedded'){
 				app.helpers.getRecipientUrl(envelopeSummary.envelopeId, tApplicantRecipient, function(err, data){
 					if(err){
-			        	res.send('Error with getRecipientUrl, please try again');
+						res.send('Error with getRecipientUrl, please try again');
 						return console.error(err);
 					}
 
