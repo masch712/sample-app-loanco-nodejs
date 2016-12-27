@@ -12,6 +12,7 @@
 __GitHub: <a href="https://github.com/DocuSign/sample-app-loanco-nodejs" rel="nofollow">https://github.com/DocuSign/loanco-sample-app-nodejs</a>__
 
 <br />
+<br />
 
 <h4>LoanCo features:</h4>
 
@@ -29,6 +30,8 @@ __GitHub: <a href="https://github.com/DocuSign/sample-app-loanco-nodejs" rel="no
 </ul>
 </div><div class="col-md-6">
 
+<br />
+<br />
 <h4>API Tools and Links</h4>
 
 <h5>Developer Center</h5>
