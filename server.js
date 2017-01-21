@@ -16,7 +16,7 @@ process.on('uncaughtException', function(err) {
 });
 
 var app = express();
-GLOBAL.app = app;
+global.app = app;
 
 app.config = require('./config');
 app.helpers = require('./helpers');
