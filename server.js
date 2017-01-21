@@ -112,12 +112,13 @@ app.use(session({
 
 
 // set up a route to redirect http to https (in case dns not setup)
-app.get('*',function(req,res,next){  
-    if(app.config.force_https && !req.secure){
-      var domain = req.host;
-      return res.redirect('https://' + domain + req.url);
-    }
-    next();
+app.get('*',function(req,res,next){
+  console.log('Redirecting to https');
+  if(app.config.force_https && !req.secure){
+    var domain = req.host;
+    return res.redirect('https://' + domain + req.url);
+  }
+  next();
 })
 
 app.use('/', function(req, res, next){
@@ -174,17 +175,23 @@ app.use(function(err, req, res, next) {
   });
 });
 
-var privateKey = fs.readFileSync('sslcerts/server.key');
-var certificate = fs.readFileSync('sslcerts/server.crt');
-
-var credentials = {
-  key: privateKey,
-  cert: certificate
-};
 
 // Create the HTTP and HTTPS servers
 var server = require('http').Server(app);
-var httpsServer = require('https').Server(credentials, app);
+var httpsServer;
+try {
+  var privateKey = fs.readFileSync('sslcerts/server.key');
+  var certificate = fs.readFileSync('sslcerts/server.crt');
+
+  var credentials = {
+    key: privateKey,
+    cert: certificate
+  };
+
+  httpsServer = require('https').Server(credentials, app);
+}catch(err){
+  console.error('HTTPS server failed to start. Missing key or crt');
+}
 
 app.setup = require('./setup');
 
@@ -217,11 +224,11 @@ app.config.loginToDocuSign(function(err){
       // Start the server
       ////////////////////////////////////////////////
       server.listen(3801, function() {
-        console.log('HTTP being served');
+        console.log('HTTP being served on 3801');
       });
 
-      httpsServer.listen(8443, function() {
-        console.log('HTTPS being served');
+      httpsServer && httpsServer.listen(8443, function() {
+        console.log('HTTPS being served on 8443');
       });
 
     // });
