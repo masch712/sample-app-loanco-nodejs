@@ -1,8 +1,6 @@
 
 ### DocuSign LoanCo Sample App 
 
-https://loancosample.docusign.com/ 
-
 LoanCo is a sample loan app that shows some common ways an application might interact with the DocuSign eSignature API. Various switches (authentication, embedded signing, templates) can be changed to show additional platform and API features and how easy they are to add to your own solution. LoanCo offers three (3) different loan workflows that demonstrate various features and workflows available through the platform.
 
 #### Requirements
@@ -13,16 +11,16 @@ LoanCo is a sample loan app that shows some common ways an application might int
 
 #### Installation 
 
-	git clone <repo> 
-	cd <repo directory>
-	npm install
+    git clone <repo> 
+    cd <repo directory>
+    npm install
     npm start
 
 
 #### Running 
 
-	npm start
-	
+    npm start
+    
 
 #### Configuration 
 
@@ -31,23 +29,32 @@ LoanCo is a sample loan app that shows some common ways an application might int
 
 We use environment variables to setup our configuration. You can store these variables in a `.env` file at the root (`dotenv` package is used) 
 
-	DOCUSIGN_ENVIRONMENT=demo  // use "www" for production  
-	DOCUSIGN_USERNAME=         // account email address  
-	DOCUSIGN_PASSWORD=         // account password
-	DOCUSIGN_IK=               // Integrator Key 
-	EMPLOYEE_EMAIL=            // used for final recipient of Personal Loan
-	EMPLOYEE_NAME=             // used for final recipient of Personal Loan
-	LOCAL_RETURN_URL=http://localhost/   // change to the correct return url, with a trailing slash
-	BRAND_ID=                  // not required, use to show a different Brand for the Sailboat example 
-	GOOGLE_MAPS_API_KEY=       // required for Sailboat example to work
+    DOCUSIGN_ENVIRONMENT=demo  // use "www" for production  
+    DOCUSIGN_USERNAME=         // account email address  
+    DOCUSIGN_PASSWORD=         // account password
+    DOCUSIGN_IK=               // Integrator Key 
+    EMPLOYEE_EMAIL=            // used for final recipient of Personal Loan
+    EMPLOYEE_NAME=             // used for final recipient of Personal Loan
+    LOCAL_RETURN_URL=http://localhost/   // change to the correct return url, with a trailing slash
+    BRAND_ID=                  // not required, use to show a different Brand for the Sailboat example 
+    GOOGLE_MAPS_API_KEY=       // required for Sailboat example to work
     GOOGLE_ANALYTICS=          // UA-XYZ-1
-	DEFAULT_EMAIL=             // for autofilling email input fields
+    DEFAULT_EMAIL=             // for autofilling email input fields
     FORCE_HTTPS=               // force https by setting to true
 
 
 ##### Templates 
 
-When initially run, the app will attempt to create a Template for the Auto Loan Application. This template is defined at `pdfs/template-auto-loan.json`. 
+Templates are not currently automatically created. To create the Auto Loan template, follow these steps: 
+
+1. Visit your Templates tab: https://appdemo.docusign.com/templates  
+1. Click "New" and "Upload Template" 
+1. Upload the file "pdfs/template-auto-loan.json" and click on the newly-created Template 
+1. Copy the Template ID by clicking the "(I)" or information icon next to the Template title 
+1. Paste the Template ID into the "pdfs/template-auto-loan.json" file, replacing the existing templateId value 
+1. Restart the sample using `npm start`  
+
+> Todo: When initially run, the app will attempt to create a Template for the Auto Loan Application. This template is defined at `pdfs/template-auto-loan.json`. 
 
 
 #### Deploy to Heroku 
@@ -90,7 +97,17 @@ Code:
         message: 'This Account lacks sufficient permissions. Document Visibility has been specified.  This account does not have document visibility turned on.' 
     }
 
-Change this setting: http://imgur.com/j4VD6nd
+Change this setting: http://imgur.com/j4VD6nd on https://admindemo.docusign.com/sending-settings
+
+
+
+    {
+        errorCode: 'PLAN_ITEM_NOT_ENABLED',
+        message: 'A requested plan item is not enabled for this account. Plan item: AllowRequireWetSign' 
+    }
+
+Contact Support (support@docusign.com) and request "Allow Require Wet Sign" to be enable on your account, and then change this setting: http://imgur.com/a/mJ5WC on https://admindemo.docusign.com/signing-settings under "Recipients" 
+
 
 
 #### API Tools and Links
