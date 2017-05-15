@@ -22,7 +22,7 @@ router.get('/envelopes/:envelopeId/filelist/', function(req, res, next){
 
 
 router.get('/envelopes/:envelopeId/download/:documentId', function(req, res, next){
-	if (parseInt(req.params.documentId) == NaN) {
+	if (/^\d+$/.test(req.params.documentId)) {
 		return res.status(400).send('DocumentId must be an integer');
 	}
 	app.models.Envelope.findOne({
