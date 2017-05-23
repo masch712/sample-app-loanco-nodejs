@@ -9,7 +9,7 @@
 
 <div class="row"><div class="col-md-6">
 
-__GitHub: <a href="https://github.com/DocuSign/sample-app-loanco-nodejs" rel="nofollow">https://github.com/DocuSign/loanco-sample-app-nodejs</a>__
+__GitHub: <a href="https://github.com/docusign/sample-app-loanco-nodejs" rel="nofollow">https://github.com/docusign/sample-app-loanco-nodejs</a>__
 
 <br />
 <br />
