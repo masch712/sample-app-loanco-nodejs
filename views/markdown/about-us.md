@@ -53,10 +53,10 @@ https://apiexplorer.docusign.com/
 
 ### About DocuSign 
 
-* More than __100 million users__ in __188 countries__
-* More than 225,000 companies
-* More than 130,000 new unique users join The DocuSign Global Trust Network every day
-* More than 62% of documents are completed within one hour on The DocuSign Global Trust Network
+* More than __200 million users__ in __188 countries__
+* More than 300,000 companies
+* More than 300,000 new unique users join The DocuSign Global Trust Network every day
+* More than 64% of documents are completed within one hour
 * DocuSign is available in 43 languages
 
 <br />
