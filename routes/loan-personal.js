@@ -8,13 +8,6 @@ var docusign = require('docusign-esign'),
   fs = require('fs'),
   path = require('path');
 
-// router.get('/loan/personal', function(req, res, next) {
-// 	res.render('loan-personal', {
-// 		signing_location_options: app.helpers.signing_location_options,
-// 		authentication_options: app.helpers.authentication_options
-// 	});
-// });
-
 router.get('/close_window', function(req, res, next) {
 	res.send("<script>window.close()</script>");
 });
