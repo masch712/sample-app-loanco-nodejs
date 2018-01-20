@@ -31,6 +31,8 @@ config.brand_id = process.env.BRAND_ID;
 config.google_maps_api_key = process.env.GOOGLE_MAPS_API_KEY;
 config.default_email = process.env.DEFAULT_EMAIL;
 config.force_https = process.env.FORCE_HTTPS == 'true' ? true:false; // change to false!
+config.cert = process.env.HTTPS_CERT;
+config.privatekey = process.env.HTTPS_KEY;
 
 app.locals.googletag = process.env.GOOGLE_ANALYTICS;
 

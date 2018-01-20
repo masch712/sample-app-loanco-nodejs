@@ -180,8 +180,8 @@ app.use(function(err, req, res, next) {
 var server = require('http').Server(app);
 var httpsServer;
 try {
-  var privateKey = fs.readFileSync('sslcerts/server.key');
-  var certificate = fs.readFileSync('sslcerts/server.crt');
+  var privateKey = fs.readFileSync(app.config.privatekey);
+  var certificate = fs.readFileSync(app.config.cert);
 
   var credentials = {
     key: privateKey,
