@@ -9,7 +9,7 @@ var docusign = require('docusign-esign'),
   path = require('path');
 
 router.get('/close_window', function(req, res, next) {
-	res.send("<script>debugger; window.frameElement.parentElement.ownerDocument.defaultView.close()</script>");
+	res.send("<script>window.frameElement.parentElement.ownerDocument.defaultView.close()</script>");
 });
 
 router.get('/loan/personal', function(req, res, next) {
