@@ -190,6 +190,7 @@ try {
 
   httpsServer = require('https').Server(credentials, app);
 }catch(err){
+  console.error(err);
   console.error('HTTPS server failed to start. Missing key or crt');
 }
 

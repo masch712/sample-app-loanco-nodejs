@@ -50,7 +50,7 @@ helpers.getRecipientUrl = function getRecipientUrl(envelopeId, recipient, callba
     // set the url where you want the recipient to go once they are done signing
     // - this can be used by your app to watch the URL and detect when signing has completed (or was canceled) 
     var returnUrl = new docusign.RecipientViewRequest();
-    returnUrl.setReturnUrl(app.config.auth.LocalReturnUrl + 'pop/' + envelopeId);
+    returnUrl.setReturnUrl("https://dev112.athenahealth.com:8443/close_window");
     returnUrl.setAuthenticationMethod('email');
 
     // recipient information must match embedded recipient info we provided

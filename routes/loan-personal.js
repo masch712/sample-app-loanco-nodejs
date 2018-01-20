@@ -8,14 +8,18 @@ var docusign = require('docusign-esign'),
   fs = require('fs'),
   path = require('path');
 
-router.get('/loan/personal', function(req, res, next) {
-	res.render('loan-personal', {
-		signing_location_options: app.helpers.signing_location_options,
-		authentication_options: app.helpers.authentication_options
-	});
+// router.get('/loan/personal', function(req, res, next) {
+// 	res.render('loan-personal', {
+// 		signing_location_options: app.helpers.signing_location_options,
+// 		authentication_options: app.helpers.authentication_options
+// 	});
+// });
+
+router.get('/close_window', function(req, res, next) {
+	res.send("<script>window.close()</script>");
 });
 
-router.post('/loan/personal', function(req, res, next) {
+router.get('/loan/personal', function(req, res, next) {
 	// console.log('BODY:', typeof req.body, req.body.inputEmail, req.body);
 
 	var body = req.body;
@@ -42,10 +46,11 @@ router.post('/loan/personal', function(req, res, next) {
 
 	// Recipient
 	var signer = new docusign.Signer();
-	signer.setEmail(body.inputEmail);
-	signer.setName(body.inputFirstName + ' ' + body.inputLastName);
+	signer.setEmail("aaron.asch@gmail.com");
+	signer.setName("aaron asch");
 	signer.setRecipientId('1');
-	if(body.inputSigningLocation == 'embedded'){
+  body.inputSigningLocation = 'embedded';
+  if(body.inputSigningLocation == 'embedded'){
 		signer.setClientUserId('1001');
 	}
 	if(body.inputAuthentication == 'phone'){
