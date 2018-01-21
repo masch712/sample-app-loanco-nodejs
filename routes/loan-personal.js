@@ -13,20 +13,23 @@ router.get('/close_window', function(req, res, next) {
 });
 
 router.get('/loan/personal', function(req, res, next) {
-	// console.log('BODY:', typeof req.body, req.body.inputEmail, req.body);
-
 	var body = req.body;
+	var docName = req.query.FORM_TYPE === 'VACCINE' ? 'Clinical Data Registry Form' : "W9";
 
 	// create an envelope that will store the document(s), field(s), and recipient(s)
 	var envDef = new docusign.EnvelopeDefinition();
-	envDef.setEmailSubject('Personal Loan Application');
-	envDef.setEmailBlurb('Please sign the Loan application to start the application process.');
+	envDef.setEmailSubject(docName);
+	envDef.setEmailBlurb('Please sign form.');
 
 	// add a document to the envelope
 	var doc = new docusign.Document();
-	// var file1Base64 = app.helpers.getLocalDocument('pdfs/LoanPersonal.docx');
-  var file1Base64 = app.helpers.getLocalDocument('pdfs/w9.pdf');
-	// var base64Doc = new Buffer(file1Base64).toString('base64');
+
+  if (req.query.FORM_TYPE === 'VACCINE') {
+    var file1Base64 = app.helpers.getLocalDocument('pdfs/clinical_data_registry_form.pdf');
+  }
+  else {
+    var file1Base64 = app.helpers.getLocalDocument('pdfs/w9.pdf');
+  }
 	doc.setDocumentBase64(file1Base64);
 	doc.setName('Document'); // can be different from actual file name
 	doc.setFileExtension('docx');
@@ -38,10 +41,11 @@ router.get('/loan/personal', function(req, res, next) {
 
 
 	// Recipient
+	var recipientId = '2';
 	var signer = new docusign.Signer();
-	signer.setEmail("aaron.asch@gmail.com");
-	signer.setName("aaron asch");
-	signer.setRecipientId('1');
+	signer.setEmail("dpaciulan@athenahealth.com");
+	signer.setName("Dann Paciulan");
+	signer.setRecipientId(recipientId);
   body.inputSigningLocation = 'embedded';
   if(body.inputSigningLocation == 'embedded'){
 		signer.setClientUserId('1001');
@@ -60,139 +64,64 @@ router.get('/loan/personal', function(req, res, next) {
 	var tabList = {
 		// text: [],
 		// email: [],
-		// fullName: [],
+		fullName: [],
 		signHere: [],
 		// initialHere: [],
-		// dateSigned: [],
+		dateSigned: [],
 		// formula: [],
 		// number: []
 	}
 
 	// Note: using anchorStrings (in tabs below) makes documentId and pageNumber irrelevant (they affect all documents and pages)
   //
-	// // FullName
-	// tabList.fullName.push(app.helpers.makeTab('FullName', {
-	// 	recipientId: '1',
-	// 	anchorString: 'Name',
-	// 	anchorXOffset: '58',
-	// 	anchorYOffset: '-2',
-	// 	locked: 'false'
-	// }));
-  //
-	// // Email
-	// tabList.email.push(app.helpers.makeTab('Email', {
-	// 	recipientId: '1',
-	// 	name: 'Email',
-	// 	tabLabel: 'Email',
-	// 	anchorString: 'Email',
-	// 	anchorXOffset: '55',
-	// 	anchorYOffset: '-2',
-	// 	value: body.inputEmail
-	// }));
-  //
-	// // Phone
-	// tabList.text.push(app.helpers.makeTab('Text', {
-	// 	recipientId: '1',
-	// 	name: 'Phone',
-	// 	tabLabel: 'Phone',
-	// 	anchorString: 'Phone',
-	// 	anchorXOffset: '65',
-	// 	anchorYOffset: '-2',
-	// 	value: body.inputPhone,
-	// 	locked: 'false',
-	// }));
-  //
-	// // Address Line 1
-	// tabList.text.push(app.helpers.makeTab('Text', {
-	// 	recipientId: '1',
-	// 	name: 'AddressLine1',
-	// 	tabLabel: 'AddressLine1',
-	// 	anchorString: 'Address',
-	// 	anchorXOffset: '80',
-	// 	anchorYOffset: '-2',
-	// 	value: body.inputAddress1,
-	// 	locked: 'false',
-	// }));
-  //
-	// // Address Line 2
-	// tabList.text.push(app.helpers.makeTab('Text', {
-	// 	recipientId: '1',
-	// 	name: 'AddressLine2',
-	// 	tabLabel: 'AddressLine2',
-	// 	anchorString: 'Address',
-	// 	anchorXOffset: '80',
-	// 	anchorYOffset: '20',
-	// 	value: body.inputAddress2,
-	// 	required: 'false',
-	// 	locked: 'false',
-	// }));
-  //
-	// // Address city/state/zip
-	// tabList.text.push(app.helpers.makeTab('Text', {
-	// 	recipientId: '1',
-	// 	name: 'AddressCityStateZip',
-	// 	tabLabel: 'AddressCityStateZip',
-	// 	anchorString: 'Address',
-	// 	anchorXOffset: '80',
-	// 	anchorYOffset: '40',
-	// 	value: body.inputCity + ', ' + body.inputState + ' ' + body.inputZip,
-	// 	locked: 'false',
-	// }));
-  //
-	// // Amount
-	// tabList.number.push(app.helpers.makeTab('Number', {
-	// 	recipientId: '1',
-	// 	name: 'Amount',
-	// 	tabLabel: 'Amount',
-	// 	anchorString: 'Amount',
-	// 	anchorXOffset: '75',
-	// 	anchorYOffset: '-2',
-	// 	locked: 'false',
-	// 	value: body.inputLoanAmount
-	// }));
-	//
-	// // Payment payback period (months)
-	// tabList.number.push(app.helpers.makeTab('Number', {
-	// 	recipientId: '1',
-	// 	name: 'PaymentDuration',
-	// 	tabLabel: 'PaymentDuration',
-	// 	anchorString: 'Payment Duration',
-	// 	anchorXOffset: '150',
-	// 	anchorYOffset: '-2',
-	// 	locked: 'false',
-	// 	value: body.inputLoanLength
-	// }));
-	//
-	// // Monthly payments (calculated field)
-	// tabList.formula.push(app.helpers.makeTab('FormulaTab', {
-	// 	recipientId: '1',
-	// 	name: 'MonthlyPayment',
-	// 	tabLabel: 'MonthlyPayment',
-	// 	anchorString: 'Monthly Payment',
-	// 	anchorXOffset: '180',
-	// 	anchorYOffset: '-2',
-	// 	formula: '[Amount]/[PaymentDuration]'
-	// }));
+	// FullName
+	if (req.query.FORM_TYPE === 'VACCINE') {
+    tabList.fullName.push(app.helpers.makeTab('FullName', {
+      recipientId: recipientId,
+      xPosition: '100',
+      yPosition: '590',
+      pageNumber: '7',
+      documentId: '1',
+    }));
+  }
+  else {
+    tabList.dateSigned.push(app.helpers.makeTab('DateSigned', {
+      recipientId: recipientId,
+      xPosition: '450',
+      yPosition: '525',
+      pageNumber: '1',
+      documentId: '1',
+    }));
+	}
 
-
-	// SignHere
-	tabList.signHere.push(app.helpers.makeTab('SignHere', {
-		recipientId: '1',
-		anchorString: 'Signature of U.S. person',
-		anchorXOffset: '75',
-		anchorYOffset: '20',
-	}));
+	// CDRF: SignHere
+	if(req.query.FORM_TYPE === 'VACCINE') {
+    tabList.signHere.push(app.helpers.makeTab('SignHere', {
+      recipientId: recipientId,
+      xPosition: '100',
+      yPosition: '525',
+      pageNumber: '7',
+      documentId: '1',
+    }));
+  }
+  else {
+    // W-9: SignHere
+    tabList.signHere.push(app.helpers.makeTab('SignHere', {
+    	recipientId: recipientId,
+    	anchorString: 'Signature of U.S. person',
+    	anchorXOffset: '75',
+    	anchorYOffset: '20',
+    }));
+	}
 
 
 	var tabs = new docusign.Tabs();
-	// tabs.setTextTabs(tabList.text);
-	// tabs.setNumberTabs(tabList.number);
-	// tabs.setFormulaTabs(tabList.formula);
-	// tabs.setEmailTabs(tabList.email);
-	// tabs.setFullNameTabs(tabList.fullName);
+	if (req.query.FORM_TYPE === 'VACCINE') {
+    tabs.setFullNameTabs(tabList.fullName);
+  }
 	tabs.setSignHereTabs(tabList.signHere);
 	// tabs.setInitialHereTabs(tabList.initialHere);
-	// tabs.setDateSignedTabs(tabList.dateSigned);
+	tabs.setDateSignedTabs(tabList.dateSigned);
 
 	signer.setTabs(tabs);
 
