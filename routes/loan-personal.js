@@ -12,7 +12,7 @@ router.get('/close_window', function(req, res, next) {
 	res.send("<script>window.frameElement.parentElement.ownerDocument.defaultView.close()</script>");
 });
 
-router.get('/loan/personal', function(req, res, next) {
+router.get('/sign_form', function(req, res, next) {
 	var body = req.body;
 	var docName = req.query.FORM_TYPE === 'VACCINE' ? 'Clinical Data Registry Form' : "W9";
 
@@ -43,8 +43,8 @@ router.get('/loan/personal', function(req, res, next) {
 	// Recipient
 	var recipientId = '2';
 	var signer = new docusign.Signer();
-	signer.setEmail("dpaciulan@athenahealth.com");
-	signer.setName("Dann Paciulan");
+	signer.setEmail(app.config.auth.EmployeeEmail);
+	signer.setName(app.config.auth.EmployeeName);
 	signer.setRecipientId(recipientId);
   body.inputSigningLocation = 'embedded';
   if(body.inputSigningLocation == 'embedded'){
